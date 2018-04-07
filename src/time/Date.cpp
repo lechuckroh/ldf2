@@ -44,18 +44,16 @@ LDF_BEGIN
     }
 
     Date::Date() {
-        auto t = chrono::system_clock::to_time_t(chrono::system_clock::now());
-        auto now = localtime(&t);
+        time_t t = chrono::system_clock::to_time_t(chrono::system_clock::now());
+        struct tm localNow{};
+        int errNo = localtime_s(&localNow, &t);
 
-        if (now == nullptr) {
-            _year = 0;
-            _month = 1;
-            _day = 1;
-        } else {
-            _year = now->tm_year + 1900;
-            _month = now->tm_mon + 1;
-            _day = now->tm_mday;
+        if (errNo != 0) {
+            throw runtime_error("Failed to get current time");
         }
+        _year = localNow.tm_year + 1900;
+        _month = localNow.tm_mon + 1;
+        _day = localNow.tm_mday;
     }
 
     /**
@@ -121,14 +119,6 @@ LDF_BEGIN
 
     void Date::set(const Date &date) {
         set(date._year, date._month, date._day);
-    }
-
-    Date Date::Empty() {
-        return Date(0, 1, 1);
-    }
-
-    bool Date::empty() const {
-        return _year == 0 && _month == 1 && _day == 1;
     }
 
     bool Date::leap() const {

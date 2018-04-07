@@ -23,9 +23,9 @@ LDF_BEGIN
 
         Time(int hour, int minute, int second);
 
-        Time(const std::string &str);
+        explicit Time(const std::string &str);
 
-        Time(int timeInSec);
+        explicit Time(int timeInSec);
 
         void set(int hour, int minute, int second);
 

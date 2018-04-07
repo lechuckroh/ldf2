@@ -2,6 +2,7 @@
 #define _LDF_STRINGS_H_
 
 #include <cstdio>
+#include <memory>
 #include <string>
 #include "base.h"
 

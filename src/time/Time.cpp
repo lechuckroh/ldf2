@@ -93,7 +93,7 @@ LDF_BEGIN
         int second = -1;
 
         smatch sm;
-        regex_match(str, sm, regex("([0-9]{2})[:]?([0-9]{2})[:]?([0-9]{2})"));
+        regex_match(str, sm, regex("([0-9]+)[:]?([0-9]{2})[:]?([0-9]{2})"));
         if (sm.size() == 4) {
             hour = Strings::ToInt(sm[1], -1);
             minute = Strings::ToInt(sm[2], -1);

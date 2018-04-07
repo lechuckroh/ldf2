@@ -1,66 +1,87 @@
 #ifndef _LDF_DATETIME_H_
 #define _LDF_DATETIME_H_
 
+#include <memory>
 #include "Date.h"
 #include "Time.h"
 
 
 LDF_BEGIN
 
-class DateTime {
-public:
-    DateTime();
-    DateTime(const Date &date);
-    DateTime(const DateTime &dateTime);
-    DateTime(int year, int month, int day, int hour=0, int min=0, int sec=0);
-    DateTime(const std::string& str);
+    class DateTime {
+    public:
+        DateTime();
 
-    virtual ~DateTime();
+        DateTime(const Date &date);
 
-    void setDate(int year, int month, int day);
-    void setDate(const Date& date);
-    void setTime(int hour, int min, int sec=0);
-    void setTime(const Time& time);
+        DateTime(int year, int month, int day, int hour = 0, int min = 0, int sec = 0);
 
-    int  year()   const;
-    int  month()  const;
-    int  day()    const;
-    int  hour()   const;
-    int  minute() const;
-    int  second() const;
+        DateTime(const std::string &str);
 
-    const Date* date() const;
-    const Time* time() const;
+        virtual ~DateTime() = default;
 
-    void  plusSecond(long sec);
-    void  plusDay(int day);
-    void  plusHour(int hour);
-    void  plusMinute(int min);
+        void date(int year, int month, int day);
 
-    DateTime& operator= (const DateTime& dateTime);
-    long  operator- (const DateTime& dateTime);
-    bool  operator< (const DateTime& dateTime);
-    bool  operator> (const DateTime& dateTime);
-    bool  operator==(const DateTime& dateTime);
-    bool  operator!=(const DateTime& dateTime);
-    bool  operator<=(const DateTime& dateTime);
-    bool  operator>=(const DateTime& dateTime);
+        void date(const Date &date);
 
-    std::string format() const;
-    std::string toString() const;
+        void time(int hour, int min, int sec = 0);
 
-	bool empty() const;
+        void time(const Time &time);
 
-    static int  Compare(const DateTime& dateTime1, const DateTime& dateTime2);
-    static long GetDiff(const DateTime& from, const DateTime& to);
-	static DateTime Empty();
+        int year() const;
 
-private:
-    Date _date;
-    Time _time;
+        int month() const;
 
-    void adjustDate();
-};
+        int day() const;
+
+        int hour() const;
+
+        int minute() const;
+
+        int second() const;
+
+        const Date date() const;
+
+        const Time time() const;
+
+        void plusSecond(long sec);
+
+        void plusDay(int day);
+
+        void plusHour(int hour);
+
+        void plusMinute(int min);
+
+        DateTime &operator=(const DateTime &dateTime);
+
+        long operator-(const DateTime &dateTime);
+
+        bool operator<(const DateTime &dateTime);
+
+        bool operator>(const DateTime &dateTime);
+
+        bool operator==(const DateTime &dateTime);
+
+        bool operator!=(const DateTime &dateTime);
+
+        bool operator<=(const DateTime &dateTime);
+
+        bool operator>=(const DateTime &dateTime);
+
+        std::string format() const;
+
+        std::string toString() const;
+
+        static int Compare(const DateTime &dateTime1, const DateTime &dateTime2);
+
+        static long Diff(const DateTime &from, const DateTime &to);
+
+    private:
+        std::unique_ptr<Date> _date;
+        std::unique_ptr<Time> _time;
+
+        void adjustDate();
+    };
 
 LDF_END
 #endif

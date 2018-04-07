@@ -75,8 +75,6 @@ LDF_BEGIN
 
         std::string toString() const;
 
-        bool empty() const;
-
         bool leap() const;
 
         static bool Leap(int year);
@@ -84,8 +82,6 @@ LDF_BEGIN
         static int Compare(const Date &date1, const Date &date2);
 
         static int Diff(const Date &from, const Date &to);
-
-        static Date Empty();
 
     private:
         int _year;
