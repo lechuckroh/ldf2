@@ -25,11 +25,9 @@ LDF_BEGIN
     public:
         Date();
 
-        Date(const Date &date) : _year(date._year), _month(date._month), _day(date._day) {}
-
         Date(int year, int month, int day) : _year(year), _month(month), _day(day) {}
 
-        Date(const std::string &str);
+        explicit Date(const std::string &str);
 
         void set(int year, int month, int day);
 
@@ -49,27 +47,23 @@ LDF_BEGIN
 
         void plusDay(int days);
 
-        void minusDay(int days);
+        Date operator+(int days);
 
-        Date &operator+(int days);
-
-        Date &operator-(int days);
-
-        Date &operator=(const Date &date);
+        Date operator-(int days);
 
         int operator-(const Date &date);
 
-        bool operator<(const Date &date);
+        bool operator<(const Date &date) const;
 
-        bool operator>(const Date &date);
+        bool operator>(const Date &date) const;
 
-        bool operator==(const Date &date);
+        bool operator==(const Date &date) const;
 
-        bool operator!=(const Date &date);
+        bool operator!=(const Date &date) const;
 
-        bool operator<=(const Date &date);
+        bool operator<=(const Date &date) const;
 
-        bool operator>=(const Date &date);
+        bool operator>=(const Date &date) const;
 
         std::string format() const;
 

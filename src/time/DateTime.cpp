@@ -38,7 +38,7 @@ LDF_BEGIN
         if (hour < 0) {
             int daysToReduce = abs((hour + 1) / 24) + 1;
             _time->plusHour(daysToReduce * 24);
-            _date->minusDay(daysToReduce);
+            _date->plusDay(-daysToReduce);
         }
 
         if (hour >= 24) {

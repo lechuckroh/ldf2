@@ -15,17 +15,16 @@ LDF_BEGIN
      */
     Time::Time() {
         auto t = chrono::system_clock::to_time_t(chrono::system_clock::now());
-        auto now = localtime(&t);
+        struct tm localNow{};
+        int errNo = localtime_s(&localNow, &t);
 
-        if (now == nullptr) {
-            _hour = 0;
-            _minute = 0;
-            _second = 0;
-        } else {
-            _hour = now->tm_hour;
-            _minute = now->tm_min;
-            _second = now->tm_sec;
+        if (errNo != 0) {
+            throw runtime_error("Failed to get current time");
         }
+
+        _hour = localNow.tm_hour;
+        _minute = localNow.tm_min;
+        _second = localNow.tm_sec;
     }
 
     Time::Time(const Time &time) {
@@ -125,7 +124,7 @@ LDF_BEGIN
      * hh:mm:dd 포맷으로 리턴한다.
      */
     string Time::toString() const {
-        return strf("%02d:%02d:%02d", _hour, _minute, _second);
+        return format();
     }
 
     void Time::plusHour(int hours) {
@@ -154,13 +153,6 @@ LDF_BEGIN
         return Time(timeInSec() - seconds);
     }
 
-    Time &Time::operator=(const Time &time) {
-        _hour = time._hour;
-        _minute = time._minute;
-        _second = time._second;
-        return (*this);
-    }
-
     int Time::Compare(const Time &time1, const Time &time2) {
         if (time1._hour < time2._hour) return -1;
         if (time1._hour > time2._hour) return 1;
@@ -179,31 +171,31 @@ LDF_BEGIN
         return to.timeInSec() - from.timeInSec();
     }
 
-    int Time::operator-(const Time &time) {
+    int Time::operator-(const Time &time) const {
         return timeInSec() - time.timeInSec();
     }
 
-    bool Time::operator<(const Time &time) {
+    bool Time::operator<(const Time &time) const {
         return Compare(*this, time) < 0;
     }
 
-    bool Time::operator>(const Time &time) {
+    bool Time::operator>(const Time &time) const {
         return Compare(*this, time) > 0;
     }
 
-    bool Time::operator==(const Time &time) {
+    bool Time::operator==(const Time &time) const {
         return _hour == time._hour && _minute == time._minute && _second == time._second;
     }
 
-    bool Time::operator!=(const Time &time) {
+    bool Time::operator!=(const Time &time) const {
         return _hour != time._hour && _minute != time._minute && _second != time._second;
     }
 
-    bool Time::operator<=(const Time &time) {
+    bool Time::operator<=(const Time &time) const {
         return !(*this > time);
     }
 
-    bool Time::operator>=(const Time &time) {
+    bool Time::operator>=(const Time &time) const {
         return !(*this < time);
     }
 

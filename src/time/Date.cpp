@@ -149,51 +149,51 @@ LDF_BEGIN
     }
 
     string Date::toString() const {
-        return strf("%04d%02d%02d", _year, _month, _day);
+        return format();
     }
 
     void Date::plusDay(int days) {
-        // add 'days' first
-        _day += days;
+        if (days > 0) {
+            // add 'days' first
+            _day += days;
 
-        // reduce until _day is less than daysOfMonth.
-        while (_day > daysOfMonth()) {
-            _day -= daysOfMonth();
-            _month++;
+            // reduce until _day is less than daysOfMonth.
+            while (_day > daysOfMonth()) {
+                _day -= daysOfMonth();
+                _month++;
 
-            if (_month > 12) {
-                _month = 1;
-                _year++;
+                if (_month > 12) {
+                    _month = 1;
+                    _year++;
+                }
+            }
+        } else if (days < 0) {
+            // reduce 'days' first
+            _day += days;
+
+            // add daysOfMonth until '_day' is positive.
+            while (_day < 1) {
+                _month--;
+                if (_month < 1) {
+                    _month = 12;
+                    _year--;
+                }
+                _day += daysOfMonth();
             }
         }
     }
 
-    void Date::minusDay(int days) {
-        // reduce 'days' first
-        _day -= days;
-
-        // add daysOfMonth until '_day' is positive.
-        while (_day < 1) {
-            _month--;
-            if (_month < 1) {
-                _month = 12;
-                _year--;
-            }
-            _day += daysOfMonth();
-        }
+    Date Date::operator+(int days) {
+        Date result(_year, _month, _day);
+        result.plusDay(days);
+        return result;
     }
 
-    Date &Date::operator+(int days) {
-        plusDay(days);
-        return *this;
+    Date Date::operator-(int days) {
+        Date result(_year, _month, _day);
+        result.plusDay(-days);
+        return result;
     }
-
-    Date &Date::operator-(int days) {
-        minusDay(days);
-        return *this;
-    }
-
-    Date &Date::operator=(const Date &date) = default;
 
     int Date::Compare(const Date &date1, const Date &date2) {
         if (date1._year < date2._year) {
@@ -245,31 +245,28 @@ LDF_BEGIN
         return Diff(date, *this);
     }
 
-    bool Date::operator<(const Date &date) {
+    bool Date::operator<(const Date &date) const {
         return Compare(*this, date) < 0;
     }
 
-    bool Date::operator>(const Date &date) {
-        if (*this < date) {
-            return false;
-        }
-        return !(*this == date);
+    bool Date::operator==(const Date &date) const {
+        return Compare(*this, date) == 0;
     }
 
-    bool Date::operator==(const Date &date) {
-        return _year == date._year && _month == date._month && _day == date._day;
+    bool Date::operator>(const Date &date) const {
+        return Compare(*this, date) > 0;
     }
 
-    bool Date::operator!=(const Date &date) {
-        return _year != date._year || _month != date._month || _day != date._day;
+    bool Date::operator!=(const Date &date) const {
+        return Compare(*this, date) != 0;
     }
 
-    bool Date::operator<=(const Date &date) {
-        return !(*this > date);
+    bool Date::operator<=(const Date &date) const {
+        return Compare(*this, date) <= 0;
     }
 
-    bool Date::operator>=(const Date &date) {
-        return !(*this < date);
+    bool Date::operator>=(const Date &date) const {
+        return Compare(*this, date) >= 0;
     }
 
 LDF_END

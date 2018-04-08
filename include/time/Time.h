@@ -53,21 +53,19 @@ LDF_BEGIN
 
         Time operator-(int seconds);
 
-        Time &operator=(const Time &time);
+        int operator-(const Time &time) const;
 
-        int operator-(const Time &time);
+        bool operator<(const Time &time) const;
 
-        bool operator<(const Time &time);
+        bool operator>(const Time &time) const;
 
-        bool operator>(const Time &time);
+        bool operator==(const Time &time) const;
 
-        bool operator==(const Time &time);
+        bool operator!=(const Time &time) const;
 
-        bool operator!=(const Time &time);
+        bool operator<=(const Time &time) const;
 
-        bool operator<=(const Time &time);
-
-        bool operator>=(const Time &time);
+        bool operator>=(const Time &time) const;
 
         std::string format() const;
 

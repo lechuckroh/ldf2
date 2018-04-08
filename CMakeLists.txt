@@ -35,6 +35,7 @@ target_include_directories(Catch INTERFACE ${TEST_DIR})
 
 set(TEST_SOURCES
         ${TEST_DIR}/main.cpp
+        ${TEST_DIR}/time/testDate.cpp
         ${TEST_DIR}/time/testTime.cpp
         )
 add_executable(tests ${TEST_SOURCES})
